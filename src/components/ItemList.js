@@ -1,11 +1,18 @@
 import React, { Component, PropTypes } from 'react';
-import { View, Text } from 'react-native';
+import { ScrollView, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { itemsFetchData } from '../actions/items';
+import Item from './Item';
 
 class ItemList extends Component {
     componentDidMount() {
         this.props.fetchData('http://pebbleplates.com/repeat-menu/wp-json/wp/v2/menu?menu_cat=8');
+    }
+
+    renderItems() {
+      return this.props.items.map((item) => (
+        <Item key={item.id} item={item} />
+      ));
     }
 
     render() {
@@ -18,13 +25,9 @@ class ItemList extends Component {
         }
 
         return (
-            <View>
-                {this.props.items.map((item) => (
-                    <Text key={item.id}>
-                        {item.acf.menu_title}
-                    </Text>
-                ))}
-            </View>
+            <ScrollView>
+              {this.renderItems()}
+            </ScrollView>
         );
     }
 }
